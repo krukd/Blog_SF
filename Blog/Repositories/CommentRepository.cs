@@ -20,6 +20,25 @@ namespace Blog.Repositories
            return articlesComment;
         }
 
+        public async Task<ArticlesComment?> DeleteAsync(Guid id)
+        {
+            var existingComment = await blogDbContext.Comments.FindAsync(id);
+
+            if (existingComment != null)
+            {
+                blogDbContext.Comments.Remove(existingComment);
+                await blogDbContext.SaveChangesAsync();
+                return existingComment;
+            }
+
+            return null;
+        }
+
+        public async Task<IEnumerable<ArticlesComment>> GetAllAsync()
+        {
+            return await blogDbContext.Comments.ToListAsync();
+        }
+
         public async Task<IEnumerable<ArticlesComment>> GetCommentsByArticleIdAsync(Guid articleId)
         {
             return await blogDbContext.Comments.Where(x => x.ArticleId == articleId).ToListAsync();

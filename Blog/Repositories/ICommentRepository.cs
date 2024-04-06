@@ -8,6 +8,8 @@ namespace Blog.Repositories
 
         Task<IEnumerable<ArticlesComment>> GetCommentsByArticleIdAsync(Guid articleId);
 
-       
+        Task<IEnumerable<ArticlesComment>> GetAllAsync();
+
+        Task<ArticlesComment?> DeleteAsync(Guid id);
     }
 }

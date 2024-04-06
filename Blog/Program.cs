@@ -1,6 +1,11 @@
 using Blog.Data;
 using Blog.Repositories;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Abstractions;
+using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.EntityFrameworkCore;
 
 namespace Blog
@@ -40,6 +45,7 @@ namespace Blog
             builder.Services.AddScoped<IArticleLikesRepository, ArticleLikesRepository>();
             builder.Services.AddScoped<ICommentRepository, CommentRepository>();
             builder.Services.AddScoped<IUserRepository, UserRepository>();
+            
 
             var app = builder.Build();
 
@@ -59,9 +65,12 @@ namespace Blog
             app.UseAuthentication();
             app.UseAuthorization();
 
+
             app.MapControllerRoute(
-                name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
+                 name: "default",
+                 pattern: "{controller=Home}/{action=Index}/{id?}");
+
+
 
             app.Run();
         }
