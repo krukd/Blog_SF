@@ -47,9 +47,11 @@
                         <td>@comment.UserId</td>
                         <td>@comment.DateAdded</td>
                         <td>
-                            <form method="post" asp-controller="Comments" asp-action="Delete" asp-route-id="@comment.Id">
+
+                            <a asp-area="" asp-controller="Comments" asp-action="Edit" asp-route-id="@comment.Id">Edit</a>
+                           @*  <form method="post" asp-controller="Comments" asp-action="Delete" asp-route-id="@comment.Id">
                                 <button class="btn btn-danger" type="submit">Delete</button>
-                            </form>
+                            </form> *@
                         </td>
                     </tr>
                 }

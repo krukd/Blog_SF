@@ -38,5 +38,27 @@ namespace Blog.Controllers
 
             return RedirectToAction("List", "Comments");
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(Guid id)
+        {
+            var comment = await _commentRepository.GetAsync(id);
+
+            if (comment != null)
+            {
+                var editCommentViewModel = new EditCommentViewModel
+                {
+                    Id = comment.Id,
+                    Description = comment.Description,
+                    ArticleId = comment.ArticleId,
+                    UserId = comment.UserId,
+                    DateAdded = comment.DateAdded
+                };
+
+                return View(editCommentViewModel);
+            }
+
+            return View(null);
+        }
     }
 }

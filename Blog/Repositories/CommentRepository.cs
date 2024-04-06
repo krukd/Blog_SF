@@ -43,5 +43,30 @@ namespace Blog.Repositories
         {
             return await blogDbContext.Comments.Where(x => x.ArticleId == articleId).ToListAsync();
         }
+
+        public async Task<ArticlesComment?> UpdateAsync(ArticlesComment articlesComment)
+        {
+            var existingComment = await blogDbContext.Comments.FirstOrDefaultAsync(x => x.Id == articlesComment.Id);
+
+            if (existingComment != null)
+            {
+                existingComment.Id = articlesComment.Id;
+                existingComment.Description = articlesComment.Description;
+                existingComment.ArticleId = articlesComment.ArticleId;
+                existingComment.UserId = articlesComment.UserId;
+                existingComment.DateAdded = articlesComment.DateAdded;
+               
+                await blogDbContext.SaveChangesAsync();
+                return existingComment;
+            }
+
+            return null;
+        }
+
+
+        public async Task<ArticlesComment?> GetAsync(Guid id)
+        {
+            return await blogDbContext.Comments.FirstOrDefaultAsync(x => x.Id == id);
+        }
     }
 }

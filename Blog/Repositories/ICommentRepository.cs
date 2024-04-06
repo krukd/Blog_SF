@@ -1,4 +1,5 @@
-﻿using Blog.Models.Domain;
+﻿using Blog.Data;
+using Blog.Models.Domain;
 
 namespace Blog.Repositories
 {
@@ -11,5 +12,10 @@ namespace Blog.Repositories
         Task<IEnumerable<ArticlesComment>> GetAllAsync();
 
         Task<ArticlesComment?> DeleteAsync(Guid id);
+
+        Task<ArticlesComment?> UpdateAsync(ArticlesComment articlesComment);
+
+        Task<ArticlesComment?> GetAsync(Guid id);
+       
     }
 }

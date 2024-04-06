@@ -45,7 +45,8 @@ namespace Blog
             builder.Services.AddScoped<IArticleLikesRepository, ArticleLikesRepository>();
             builder.Services.AddScoped<ICommentRepository, CommentRepository>();
             builder.Services.AddScoped<IUserRepository, UserRepository>();
-            
+            builder.Services.AddScoped<IRoleRepository, RoleRepository>();
+
 
             var app = builder.Build();
 
