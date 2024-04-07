@@ -1,4 +1,5 @@
-﻿using Blog.Models.ViewModels;
+﻿using Blog.Models.Domain;
+using Blog.Models.ViewModels;
 using Blog.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -60,5 +61,31 @@ namespace Blog.Controllers
 
             return View(null);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(EditCommentViewModel editCommentViewModel)
+        {
+            var comment = new ArticlesComment
+            {
+                Id = editCommentViewModel.Id,
+                Description = editCommentViewModel.Description,
+                ArticleId = editCommentViewModel.ArticleId,
+                UserId = editCommentViewModel.UserId,
+                DateAdded = editCommentViewModel.DateAdded
+            };
+
+            var updatedComment = await _commentRepository.UpdateAsync(comment);
+
+            if(updatedComment != null)
+            {
+                return RedirectToAction("List", "Comments");
+            }
+            else
+            {
+                return RedirectToAction("Edit", new { id = editCommentViewModel.Id });
+            }
+            
+        }
+
     }
 }

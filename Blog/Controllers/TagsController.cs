@@ -119,13 +119,9 @@ namespace Blog.Controllers
 
             if (updatedTag != null)
             {
-                // Show success notification
+                return RedirectToAction("List", "Tags");
             }
-            else
-            {
-                // Show error notification
-            }
-
+           
             return RedirectToAction("Edit", new { id = editTagViewModel.Id });
         }
 
@@ -139,11 +135,11 @@ namespace Blog.Controllers
 
             if (deletedTag != null)
             {
-                // Show success notification
-                return RedirectToAction("List");
+                
+                return RedirectToAction("List", "Tags");
             }
 
-            // Show an error notification
+            
             return RedirectToAction("Edit", new { id = editTagViewModel.Id });
         }
 
