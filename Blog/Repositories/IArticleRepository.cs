@@ -15,5 +15,7 @@ namespace Blog.Repositories
         Task<Article?> DeleteAsync(Guid id);
 
         Task<Article?> GetByUrlHandleAsync(string urlHandle);
+
+        Task<IEnumerable<Article>> GetArticlesByAuthorAsync(string userName);
     }
 }

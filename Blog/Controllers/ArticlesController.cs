@@ -152,7 +152,7 @@ namespace Blog.Controllers
 
             if (updatedArticle != null)
             {
-                return RedirectToAction("Edit");
+                return RedirectToAction("List");
             }
 
             return RedirectToAction("Edit");
@@ -170,6 +170,16 @@ namespace Blog.Controllers
             }
 
             return RedirectToAction("Edit", new { id = editArticleViewModel.Id });
+        }
+
+
+        [HttpGet]
+        public async Task<IActionResult> GetArticlesByAuthor(string userName)
+        {
+            
+            var articles = await articleRepository.GetArticlesByAuthorAsync(userName);
+
+            return View(articles);
         }
     }
 }

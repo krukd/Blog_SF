@@ -39,6 +39,11 @@ namespace Blog.Repositories
             return await blogDbContext.Articles.Include(x => x.Tags).ToListAsync();
         }
 
+        public async Task<IEnumerable<Article>> GetArticlesByAuthorAsync(string userName)
+        {
+            return await blogDbContext.Articles.Include(x => x.Tags).Where(x => x.Author == userName).ToListAsync();
+        }
+
         public async Task<Article?> GetAsync(Guid id)
         {
             return await blogDbContext.Articles.Include(x => x.Tags).FirstOrDefaultAsync(x => x.Id == id);
