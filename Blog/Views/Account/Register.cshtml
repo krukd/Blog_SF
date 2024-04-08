@@ -28,6 +28,9 @@
                     <label class="form-label">Password</label>
                     <input type="password" id="password" class="form-control" asp-for="Password" required minlength="6" />
                     <span class="text-danger" asp-validation-for="Password"></span>
+                    <small class="form-text text-muted">
+                        Password must contain at least one uppercase letter and one digit.
+                    </small>
                 </div>
 
                 <div class="mb-3">
