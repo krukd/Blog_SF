@@ -11,10 +11,13 @@ namespace Blog.Controllers
     {
 
         private readonly ITagRepository tagRepository;
+        private readonly ILogger<TagsController> _logger;
 
-        public TagsController(ITagRepository tagRepository)
+        public TagsController(ITagRepository tagRepository, ILogger<TagsController> logger)
         {
             this.tagRepository = tagRepository;
+            _logger = logger;
+            _logger.LogDebug(1, "NLog подключен к TagsController");
         }
 
         
@@ -78,7 +81,7 @@ namespace Blog.Controllers
             ViewBag.PageNumber = pageNumber;
 
             var tags = await tagRepository.GetAllAsync(searchQuery, sortBy, sortDirection, pageNumber, pageSize);
-
+            _logger.LogInformation("TagsController - Index");
             return View(tags);
         }
 
