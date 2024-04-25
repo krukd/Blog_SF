@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.EntityFrameworkCore;
+using NLog;
+using NLog.Web;
 
 namespace Blog
 {
@@ -14,6 +16,14 @@ namespace Blog
     {
         public static void Main(string[] args)
         {
+            // Early init of NLog to allow startup and exception logging, before host is built
+            var logger = NLog.LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
+            logger.Debug("init main");
+
+
+            try
+            {
+
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
@@ -74,6 +84,19 @@ namespace Blog
 
 
             app.Run();
+
+            }
+            catch (Exception exception)
+            {
+                // NLog: catch setup errors
+                logger.Error(exception, "Stopped program because of exception");
+                throw;
+            }
+            finally
+            {
+                // Ensure to flush and stop internal timers/threads before application-exit (Avoid segmentation fault on Linux)
+                NLog.LogManager.Shutdown();
+            }
         }
     }
 }
