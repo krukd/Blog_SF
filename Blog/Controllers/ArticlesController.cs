@@ -13,11 +13,13 @@ namespace Blog.Controllers
     {
         private readonly ITagRepository tagRepository;
         private readonly IArticleRepository articleRepository;
-
-        public ArticlesController(ITagRepository tagRepository, IArticleRepository articleRepository)
+        private readonly ILogger<ArticlesController> _logger;
+        public ArticlesController(ITagRepository tagRepository, IArticleRepository articleRepository, ILogger<ArticlesController> logger)
         {
             this.tagRepository = tagRepository;
             this.articleRepository = articleRepository;
+            _logger = logger;
+            _logger.LogDebug(1, "NLog подключен к ArticlesController");
         }
 
         [HttpGet]
@@ -29,7 +31,7 @@ namespace Blog.Controllers
             {
                 Tags = tags.Select(x => new SelectListItem { Text = x.Name, Value = x.Id.ToString() })
             };
-
+            _logger.LogInformation("ArticlesController - обращение к методу Add");
             return View(model);
 
         }
@@ -68,6 +70,7 @@ namespace Blog.Controllers
             article.Tags = selectedTags;
 
             await articleRepository.AddAsync(article);
+            _logger.LogInformation("ArticlesController - обращение к методу Add");
             return RedirectToAction("Add");
         }
 
@@ -75,6 +78,7 @@ namespace Blog.Controllers
         public async Task<IActionResult> List()
         {
             var articles = await articleRepository.GetAllAsync();
+            _logger.LogInformation("ArticlesController - обращение к методу List");
             return View(articles);
         }
 
@@ -106,10 +110,10 @@ namespace Blog.Controllers
                     }),
                     SelectedTags = article.Tags.Select(x => x.Id.ToString()).ToArray()
                 };
-
+                _logger.LogInformation("ArticlesController - обращение к методу Edit");
                 return View(model);
             }
-
+            _logger.LogInformation("ArticlesController - обращение к методу Edit");
             return View(null);
         }
 
@@ -152,9 +156,10 @@ namespace Blog.Controllers
 
             if (updatedArticle != null)
             {
+                _logger.LogInformation("ArticlesController - обращение к методу Edit");
                 return RedirectToAction("List");
             }
-
+            _logger.LogInformation("ArticlesController - обращение к методу Edit");
             return RedirectToAction("Edit");
         }
 
@@ -166,9 +171,10 @@ namespace Blog.Controllers
 
             if (deletedArticle != null)
             {
+                _logger.LogInformation("ArticlesController - обращение к методу Delete");
                 return RedirectToAction("List");
             }
-
+            _logger.LogInformation("ArticlesController - обращение к методу Delete");
             return RedirectToAction("Edit", new { id = editArticleViewModel.Id });
         }
 
@@ -178,7 +184,7 @@ namespace Blog.Controllers
         {
             
             var articles = await articleRepository.GetArticlesByAuthorAsync(userName);
-
+            _logger.LogInformation("ArticlesController - обращение к методу GetArticlesByAuthor");
             return View(articles);
         }
     }

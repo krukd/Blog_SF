@@ -11,10 +11,13 @@ namespace Blog.Controllers
     public class ArticleLikesController : ControllerBase
     {
         private readonly IArticleLikesRepository articleLikesRepository;
+        private readonly ILogger<ArticleLikesController> _logger;
 
-        public ArticleLikesController(IArticleLikesRepository articleLikesRepository)
+        public ArticleLikesController(IArticleLikesRepository articleLikesRepository, ILogger<ArticleLikesController> logger)
         {
             this.articleLikesRepository = articleLikesRepository;
+            _logger = logger;
+            _logger.LogDebug(1, "NLog подключен к ArticleLikesController");
         }
 
 
@@ -29,7 +32,7 @@ namespace Blog.Controllers
             };
 
             await articleLikesRepository.AddLikeForArticle(model);
-
+            _logger.LogInformation("ArticleLikesController - обращение к методу Add");
             return Ok();
         }
 
@@ -39,8 +42,8 @@ namespace Blog.Controllers
         public async Task<IActionResult> GetTotalLikesForArticle([FromRoute] Guid articleId)
         {
            var totalLikes = await articleLikesRepository.GetTotalLikes(articleId);
-
-           return Ok(totalLikes);
+            _logger.LogInformation("ArticleLikesController - обращение к методу GetTotalLikesForArticle");
+            return Ok(totalLikes);
         }
     }
 }

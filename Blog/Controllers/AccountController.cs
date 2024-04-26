@@ -8,17 +8,21 @@ namespace Blog.Controllers
     {
         private readonly UserManager<IdentityUser> userManager;
         private readonly SignInManager<IdentityUser> signInManager;
+        private readonly ILogger<AccountController> _logger;
 
         public AccountController(UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager)
+            SignInManager<IdentityUser> signInManager, ILogger<AccountController> logger)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
+            _logger = logger;
+            _logger.LogDebug(1, "NLog подключен к AccountController");
         }
 
         [HttpGet]
         public IActionResult Register()
         {
+            _logger.LogInformation("AccountController - обращение к методу Register");
             return View();
         }
 
@@ -43,12 +47,14 @@ namespace Blog.Controllers
                     if (roleIdentityResult.Succeeded)
                     {
                         // Show success notification
+                        _logger.LogInformation("AccountController - обращение к методу Register");
                         return RedirectToAction("Register");
                     }
                 }
             }
 
             // Show error notification
+            _logger.LogInformation("AccountController - обращение к методу Register");
             return View();
         }
 
@@ -57,7 +63,7 @@ namespace Blog.Controllers
         public IActionResult Login(string ReturnUrl)
         {
             var model = new LoginViewModel { ReturnUrl = ReturnUrl };
-
+            _logger.LogInformation("AccountController - обращение к методу Login");
             return View(model);
         }
 
@@ -78,11 +84,11 @@ namespace Blog.Controllers
                 {
                     return Redirect(loginViewModel.ReturnUrl);
                 }
-
+                _logger.LogInformation("AccountController - обращение к методу Login");
                 return RedirectToAction("Index", "Home");
 
             }
-
+            _logger.LogInformation("AccountController - обращение к методу Login");
             return View();
         }
 
@@ -92,13 +98,14 @@ namespace Blog.Controllers
         {
 
             await signInManager.SignOutAsync();
-
+            _logger.LogInformation("AccountController - обращение к методу Logout");
             return RedirectToAction("Index", "Home");
         }
 
         [HttpGet]
         public IActionResult AccessDenied()
         {
+            _logger.LogInformation("AccountController - обращение к методу AccessDenied");
             return View();
             
         }
