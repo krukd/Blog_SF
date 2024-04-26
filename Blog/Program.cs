@@ -1,4 +1,5 @@
 using Blog.Data;
+using Blog.Middlewares;
 using Blog.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
@@ -77,7 +78,9 @@ namespace Blog
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
-            app.UseRouting();
+                app.UseMiddleware<ExceptionHandlingMiddleware>();
+
+                app.UseRouting();
 
             app.UseAuthentication();
             app.UseAuthorization();
