@@ -11,11 +11,14 @@ namespace Blog.Controllers
     {
         private readonly IUserRepository userRepository;
         private readonly UserManager<IdentityUser> userManager;
+        private readonly ILogger<UsersController> _logger;
 
-        public UsersController(IUserRepository userRepository, UserManager<IdentityUser> userManager)
+        public UsersController(IUserRepository userRepository, UserManager<IdentityUser> userManager, ILogger<UsersController> logger)
         {
             this.userRepository = userRepository;
             this.userManager = userManager;
+            _logger = logger;
+            _logger.LogDebug(1, "NLog подключен к UsersController");
         }
 
         [HttpGet]
@@ -35,7 +38,7 @@ namespace Blog.Controllers
                     EmailAddress = user.Email,
                 });
             }
-
+            _logger.LogInformation("UsersController - обращение к методу List");
             return View(userViewModel);
         }
 
@@ -66,11 +69,12 @@ namespace Blog.Controllers
 
                     if (identityResult is not null && identityResult.Succeeded )
                     {
+                        //_logger.LogInformation("UsersController - обращение к методу List");
                         return RedirectToAction("List", "Users");
                     }
                 }
             }
-
+            _logger.LogInformation("UsersController - обращение к методу List");
             return View();
         }
 
@@ -86,9 +90,11 @@ namespace Blog.Controllers
 
                 if (identityResult is not null && identityResult.Succeeded)
                 {
+                   // _logger.LogInformation("UsersController - обращение к методу Delete");
                     return RedirectToAction("List", "Users");
                 }
             }
+            _logger.LogInformation("UsersController - обращение к методу List");
             return View();
         }
     }

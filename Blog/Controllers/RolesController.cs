@@ -12,11 +12,14 @@ namespace Blog.Controllers
     {
 
         private readonly IRoleRepository roleRepository;
+        private readonly ILogger<RolesController> _logger;
 
-        public RolesController(IRoleRepository roleRepository)
+        public RolesController(IRoleRepository roleRepository, ILogger<RolesController> logger)
         {
             this.roleRepository = roleRepository;
-           
+            _logger = logger;
+            _logger.LogDebug(1, "NLog подключен к RolesController");
+
         }
         [HttpGet]
         public async Task<IActionResult> List()
@@ -37,7 +40,7 @@ namespace Blog.Controllers
             }
 
 
-            
+            _logger.LogInformation("RolesController - обращение к методу List");
             return View(rolesViewModels);
         }
     }

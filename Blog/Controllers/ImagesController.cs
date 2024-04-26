@@ -10,9 +10,12 @@ namespace Blog.Controllers
     public class ImagesController : ControllerBase
     {
         private readonly IImageRepository imageRepository;
-        public ImagesController(IImageRepository imageRepository)
+        private readonly ILogger<ImagesController> _logger;
+        public ImagesController(IImageRepository imageRepository, ILogger<ImagesController> logger)
         {
             this.imageRepository = imageRepository;
+            _logger = logger;
+            _logger.LogDebug(1, "NLog подключен к ImagesController");
         }
 
         [HttpPost]
@@ -24,7 +27,7 @@ namespace Blog.Controllers
             {
                 return Problem("Something went wrong!", null, (int)HttpStatusCode.InternalServerError);
             }
-
+            _logger.LogInformation("ImagesController - обращение к методу Upload");
             return new JsonResult(new { link = imageURL });
         }
     }

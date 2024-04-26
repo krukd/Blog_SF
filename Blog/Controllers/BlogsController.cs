@@ -13,15 +13,18 @@ namespace Blog.Controllers
         private readonly SignInManager<IdentityUser> signInManager;
         private readonly UserManager<IdentityUser> userManager;
         private readonly ICommentRepository commentRepository;
+        private readonly ILogger<BlogsController> _logger;
 
         public BlogsController(IArticleRepository articleRepository, IArticleLikesRepository articleLikesRepository, SignInManager<IdentityUser> signInManager,
-            UserManager<IdentityUser> userManager, ICommentRepository commentRepository)
+            UserManager<IdentityUser> userManager, ICommentRepository commentRepository, ILogger<BlogsController> logger)
         {
             this.articleRepository = articleRepository;
             this.articleLikesRepository = articleLikesRepository;
             this.signInManager = signInManager;
             this.userManager = userManager;
             this.commentRepository = commentRepository;
+            _logger = logger;
+            _logger.LogDebug(1, "NLog подключен к BlogsController");
         }
 
         [HttpGet]
@@ -84,7 +87,7 @@ namespace Blog.Controllers
                     Comments = commentsForView
                 };
             }
-
+            _logger.LogInformation("BlogsController - обращение к методу Index");
             return View(articleDetailsViewModel);
         }
 
@@ -104,11 +107,11 @@ namespace Blog.Controllers
 
 
                 await commentRepository.AddAsync(domainModel);
-
+                _logger.LogInformation("BlogsController - обращение к методу Index");
                 return RedirectToAction("Index", "Blogs",
                     new {urlHandle = articleDetailsViewModel.UrlHandle});
             }
-
+            _logger.LogInformation("BlogsController - обращение к методу Index");
             return View();
         }
     }

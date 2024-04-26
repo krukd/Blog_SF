@@ -10,11 +10,14 @@ namespace Blog.Controllers
     public class CommentsController : Controller
     {
         private readonly ICommentRepository _commentRepository;
+        private readonly ILogger<CommentsController> _logger;
 
 
-        public CommentsController(ICommentRepository commentRepository)
+        public CommentsController(ICommentRepository commentRepository, ILogger<CommentsController> logger)
         {
             _commentRepository = commentRepository;
+            _logger = logger;
+            _logger.LogDebug(1, "NLog подключен к CommentsController");
         }
 
         [HttpGet]
@@ -22,6 +25,7 @@ namespace Blog.Controllers
         public async Task<IActionResult> List()
         {
             var comments = await _commentRepository.GetAllAsync();
+            _logger.LogInformation("CommentsController - обращение к методу List");
             return View(comments);
         }
 
@@ -34,9 +38,10 @@ namespace Blog.Controllers
             if (deletedComment != null)
             {
                 // Show success notification
+                _logger.LogInformation("CommentsController - обращение к методу Delete");
                 return RedirectToAction("List", "Comments");
             }
-
+            _logger.LogInformation("CommentsController - обращение к методу Delete");
             return RedirectToAction("List", "Comments");
         }
 
@@ -55,10 +60,10 @@ namespace Blog.Controllers
                     UserId = comment.UserId,
                     DateAdded = comment.DateAdded
                 };
-
+                _logger.LogInformation("CommentsController - обращение к методу Edit");
                 return View(editCommentViewModel);
             }
-
+            _logger.LogInformation("CommentsController - обращение к методу Edit");
             return View(null);
         }
 
@@ -78,10 +83,12 @@ namespace Blog.Controllers
 
             if(updatedComment != null)
             {
+                _logger.LogInformation("CommentsController - обращение к методу Edit");
                 return RedirectToAction("List", "Comments");
             }
             else
             {
+                _logger.LogInformation("CommentsController - обращение к методу Edit");
                 return RedirectToAction("Edit", new { id = editCommentViewModel.Id });
             }
             

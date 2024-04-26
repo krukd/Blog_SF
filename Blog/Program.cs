@@ -17,7 +17,7 @@ namespace Blog
         public static void Main(string[] args)
         {
             // Early init of NLog to allow startup and exception logging, before host is built
-            var logger = NLog.LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
+            var logger = LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
             logger.Debug("init main");
 
 
@@ -26,8 +26,14 @@ namespace Blog
 
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
-            builder.Services.AddControllersWithViews();
+
+                // NLog: Setup NLog for Dependency injection
+                builder.Logging.ClearProviders();
+
+                builder.Host.UseNLog();
+
+                // Add services to the container.
+                builder.Services.AddControllersWithViews();
 
             builder.Services.AddDbContext<BlogDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -95,7 +101,7 @@ namespace Blog
             finally
             {
                 // Ensure to flush and stop internal timers/threads before application-exit (Avoid segmentation fault on Linux)
-                NLog.LogManager.Shutdown();
+                LogManager.Shutdown();
             }
         }
     }

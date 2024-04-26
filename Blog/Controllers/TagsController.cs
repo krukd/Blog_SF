@@ -24,6 +24,7 @@ namespace Blog.Controllers
         [HttpGet]
         public IActionResult Add()
         {
+            _logger.LogInformation("TagsController - обращение к методу Add");
             return View();
         }
 
@@ -47,6 +48,7 @@ namespace Blog.Controllers
             };
 
             await tagRepository.AddAsync(tag);
+            _logger.LogInformation("TagsController - обращение к методу Add");
 
             return RedirectToAction("List");
         }
@@ -81,7 +83,7 @@ namespace Blog.Controllers
             ViewBag.PageNumber = pageNumber;
 
             var tags = await tagRepository.GetAllAsync(searchQuery, sortBy, sortDirection, pageNumber, pageSize);
-            _logger.LogInformation("TagsController - Index");
+            _logger.LogInformation("TagsController - обращение к методу List");
             return View(tags);
         }
 
@@ -99,7 +101,7 @@ namespace Blog.Controllers
                     Name = tag.Name,
                     DisplayName = tag.DisplayName
                 };
-
+                _logger.LogInformation("TagsController - обращение к методу Edit");
                 return View(editTagViewModel);
             }
 
@@ -122,6 +124,7 @@ namespace Blog.Controllers
 
             if (updatedTag != null)
             {
+                _logger.LogInformation("TagsController - обращение к методу Edit");
                 return RedirectToAction("List", "Tags");
             }
            
@@ -138,7 +141,7 @@ namespace Blog.Controllers
 
             if (deletedTag != null)
             {
-                
+                _logger.LogInformation("TagsController - обращение к методу Delete");
                 return RedirectToAction("List", "Tags");
             }
 
