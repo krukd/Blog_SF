@@ -19,7 +19,7 @@ namespace API.Contracts.Services
         public TagService(ITagRepository repo, BlogDbContext blogDbContext)
         {
             _repo = repo;
-            
+            _blogDbContext = blogDbContext;
         }
 
         public Task<Tag> AddAsync(TagCreateRequest request)

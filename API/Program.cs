@@ -50,6 +50,8 @@ namespace API
             builder.Services.AddScoped<IUserRepository, UserRepository>();
             builder.Services.AddScoped<IRoleRepository, RoleRepository>();
             builder.Services.AddScoped<ITagService, TagService>();
+            builder.Services.AddScoped<IRoleService, RoleService>();
+            builder.Services.AddScoped<IAccountService, AccountService>();
 
 
             var app = builder.Build();
