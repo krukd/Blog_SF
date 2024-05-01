@@ -1,23 +1,24 @@
-﻿using API.Data.Models.Request.Tags;
+﻿
 using API.Data.Models.Response.Tags;
 
-namespace API.Contracts.Services.IServices
+namespace API.Repositories
 {
-    public interface ITagService
+    public interface ITagRepository
     {
         Task<IEnumerable<Tag>> GetAllAsync(string? searchQuery = null,
             string? sortBy = null,
             string? sortDirection = null,
             int pageNumber = 1, int pageSize = 100);
-
+        
         Task<Tag?> GetAsync(Guid id);
 
-        Task<Tag> AddAsync(TagCreateRequest request);
+        Task<Tag> AddAsync(Tag tag);
 
-        Task<Tag?> UpdateAsync(TagEditRequest request);
+        Task<Tag?> UpdateAsync(Tag tag);
 
         Task<Tag?> DeleteAsync(Guid id);
 
         Task<int> CountAsync();
+
     }
 }
