@@ -1,4 +1,5 @@
-﻿using API.Data.Models.Response.Comments;
+﻿using API.Data.Models.Request.Comments;
+using API.Data.Models.Response.Comments;
 
 namespace API.Contracts.Services.IServices
 {
@@ -12,7 +13,7 @@ namespace API.Contracts.Services.IServices
 
         Task<ArticlesComment?> DeleteAsync(Guid id);
 
-        Task<ArticlesComment?> UpdateAsync(ArticlesComment articlesComment);
+        Task<ArticlesComment?> UpdateAsync(CommentEditRequest request);
 
         Task<ArticlesComment?> GetAsync(Guid id);
 

@@ -1,4 +1,5 @@
 ﻿using API.Contracts.Services.IServices;
+using API.Data.Models.Request.Comments;
 using API.Data.Models.Response.Comments;
 using API.Repositories;
 
@@ -41,9 +42,20 @@ namespace API.Contracts.Services
             throw new NotImplementedException();
         }
 
-        public Task<ArticlesComment?> UpdateAsync(ArticlesComment articlesComment)
+        public async Task<ArticlesComment> UpdateAsync(CommentEditRequest request)
         {
-            throw new NotImplementedException();
+            var comment = new ArticlesComment
+            {
+                Id = request.Id,
+                Description = request.Description,
+                ArticleId = request.ArticleId,
+                UserId = request.UserId,
+                DateAdded = request.DateAdded
+            };
+
+            var updatedComment = await _repo.UpdateAsync(comment);
+
+            return updatedComment;
         }
     }
 }

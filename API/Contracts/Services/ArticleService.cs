@@ -13,16 +13,16 @@ namespace API.Contracts.Services
     {
         private readonly IArticleRepository _repo;
         private readonly ITagRepository _tagRepo;
-        private readonly UserManager<User> _userManager;
+        //private readonly UserManager<User> _userManager;
         private readonly ICommentRepository _commentRepo;
 
 
-        public ArticleService(ITagRepository tagRepo, IArticleRepository repo, UserManager<User> userManager, ICommentRepository commentRepo)
+        public ArticleService(ITagRepository tagRepo, IArticleRepository repo, ICommentRepository commentRepo)
         {
             _repo = repo;
             _tagRepo = tagRepo;
            
-            _userManager = userManager;
+           // _userManager = userManager;
             _commentRepo = commentRepo;
         }
 

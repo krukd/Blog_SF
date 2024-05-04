@@ -52,7 +52,9 @@ namespace API
             builder.Services.AddScoped<ITagService, TagService>();
             builder.Services.AddScoped<IRoleService, RoleService>();
             builder.Services.AddScoped<IAccountService, AccountService>();
-
+            builder.Services.AddScoped<IUserService, UserService>();
+            builder.Services.AddScoped<ICommentService, CommentService>();
+            builder.Services.AddScoped<IArticleService, ArticleService>();
 
             var app = builder.Build();
 
