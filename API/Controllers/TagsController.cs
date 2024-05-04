@@ -24,7 +24,7 @@ namespace API.Controllers
        
         [HttpGet]
         [Route("All")]
-        public async Task<IEnumerable<Tag>> List(string? searchQuery, string? sortBy, string? sortDirection, int pageSize = 3, int pageNumber = 1)
+        public async Task<IEnumerable<Tag>> List()
         {
             var tags = await _tagSerive.GetAllAsync();
             return tags;

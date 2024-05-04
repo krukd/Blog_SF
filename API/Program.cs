@@ -56,6 +56,19 @@ namespace API
             builder.Services.AddScoped<ICommentService, CommentService>();
             builder.Services.AddScoped<IArticleService, ArticleService>();
 
+            builder.Services.AddAuthentication(optionts => optionts.DefaultScheme = "Cookies")
+                .AddCookie("Cookies", options =>
+                {
+                    options.Events = new Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationEvents
+                    {
+                        OnRedirectToLogin = redirectContext =>
+                        {
+                            redirectContext.HttpContext.Response.StatusCode = 401;
+                            return Task.CompletedTask;
+                        }
+                    };
+                });
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

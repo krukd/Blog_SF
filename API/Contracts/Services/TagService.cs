@@ -45,23 +45,10 @@ namespace API.Contracts.Services
             return _repo.DeleteAsync(id);
         }
 
-        public async Task<IEnumerable<Tag>> GetAllAsync(string? searchQuery = null, string? sortBy = null, string? sortDirection = null, int pageNumber = 1, int pageSize = 100)
+        public async Task<IEnumerable<Tag>> GetAllAsync()
         {
-            var totalRecords = await _repo.CountAsync();
-
-            var totalPages = Math.Ceiling((decimal)totalRecords / pageSize);
-
-            if (pageNumber > totalPages)
-            {
-                pageNumber--;
-            }
-
-            if (pageNumber < 1)
-            {
-                pageNumber++;
-            }
-
-            var tags = await _repo.GetAllAsync(searchQuery, sortBy, sortDirection, pageNumber, pageSize);
+           
+            var tags = await _repo.GetAllAsync();
 
             return tags;
         }

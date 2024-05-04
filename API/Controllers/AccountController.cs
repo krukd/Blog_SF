@@ -2,9 +2,12 @@
 using API.Data.Models.Request.Users;
 using API.Data.Models.Response.Roles;
 using API.Data.Models.Response.Users;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Authentication;
+using System.Security.Claims;
 
 namespace API.Controllers
 {
@@ -14,12 +17,14 @@ namespace API.Controllers
     {
         private readonly IAccountService _accountService;
 
-        //private readonly UserManager<User> _userManager;
-        //private readonly RoleManager<Role> _roleManager;
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
-        public AccountController(IAccountService accountService)
+        public AccountController(IAccountService accountService, UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             _accountService = accountService;
+            _userManager = userManager;
+            _roleManager = roleManager;
            
 
         }
@@ -36,6 +41,40 @@ namespace API.Controllers
 
             if (!result.Succeeded)
                 throw new AuthenticationException("Введенный пароль не корректен или не найден аккаунт");
+
+            var user = await _userManager.FindByEmailAsync(request.Username);
+            var roles = await _userManager.GetRolesAsync(user);
+
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.NameIdentifier, user.Id),
+                new Claim(ClaimTypes.Name, user.UserName),
+            };
+
+            if (roles.Contains("Администратор"))
+            {
+                claims.Add(new Claim(ClaimsIdentity.DefaultRoleClaimType, "Администратор"));
+            }
+            else
+            {
+                claims.Add(new Claim(ClaimsIdentity.DefaultRoleClaimType, roles.First()));
+            }
+
+            var claimsIdentity = new ClaimsIdentity(
+                claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+            var authProperties = new AuthenticationProperties
+            {
+                ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(20)
+            };
+
+            await HttpContext.SignInAsync(
+                CookieAuthenticationDefaults.AuthenticationScheme,
+                new ClaimsPrincipal(claimsIdentity),
+                authProperties);
+
+
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
 
             return StatusCode(200);
         }
