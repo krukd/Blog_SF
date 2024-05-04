@@ -37,7 +37,7 @@ namespace API.Controllers
         public async Task<IActionResult> AddTag(TagCreateRequest request)
         {
             var result = await _tagSerive.AddAsync(request);
-            return StatusCode(201);
+            return StatusCode(201, result);
         }
 
        
@@ -46,9 +46,9 @@ namespace API.Controllers
         [Route("Update")]
         public async Task<IActionResult> EditTag(TagEditRequest request)
         {
-            await _tagSerive.UpdateAsync(request);
+            var updatedTag = await _tagSerive.UpdateAsync(request);
 
-            return StatusCode(201);
+            return StatusCode(201, updatedTag);
         }
 
        
@@ -57,9 +57,9 @@ namespace API.Controllers
         [Route("Delete")]
         public async Task<IActionResult> RemoveTag(TagEditRequest request)
         {
-            await _tagSerive.DeleteAsync(request.Id);
+            var deletedTag = await _tagSerive.DeleteAsync(request.Id);
 
-            return StatusCode(201);
+            return StatusCode(201, deletedTag);
         }
 
 

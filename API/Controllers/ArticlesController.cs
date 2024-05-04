@@ -25,7 +25,7 @@ namespace API.Controllers
         {
 
             var result = await _articleService.AddAsync(request);
-            return StatusCode(201);
+            return StatusCode(201, result);
         }
 
         [HttpGet]
@@ -42,18 +42,18 @@ namespace API.Controllers
         public async Task<IActionResult> Edit(ArticleEditRequest request)
         {
 
-            await _articleService.UpdateAsync(request);
+            var updatedArticle = await _articleService.UpdateAsync(request);
 
-            return StatusCode(201);
+            return StatusCode(201, updatedArticle);
         }
 
         [HttpDelete]
         [Route("DeleteArticle")]
         public async Task<IActionResult> DeleteArticle(ArticleEditRequest request)
         {
-            await _articleService.DeleteAsync(request);
+            var deletedArticle = await _articleService.DeleteAsync(request);
 
-            return StatusCode(201);
+            return StatusCode(201, deletedArticle);
         }
 
 

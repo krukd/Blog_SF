@@ -51,9 +51,9 @@ namespace API.Controllers
                 new Claim(ClaimTypes.Name, user.UserName),
             };
 
-            if (roles.Contains("Администратор"))
+            if (roles.Contains("Admin"))
             {
-                claims.Add(new Claim(ClaimsIdentity.DefaultRoleClaimType, "Администратор"));
+                claims.Add(new Claim(ClaimsIdentity.DefaultRoleClaimType, "Admin"));
             }
             else
             {

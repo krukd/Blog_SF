@@ -37,7 +37,7 @@ namespace API.Controllers
         {
             var deletedComment = await _commentService.DeleteAsync(id);
 
-            return StatusCode(201);
+            return StatusCode(201, deletedComment);
         }
 
        
@@ -47,8 +47,8 @@ namespace API.Controllers
         public async Task<IActionResult> Edit(CommentEditRequest request)
         {
             var result = await _commentService.UpdateAsync(request);
-            if (result == null)
-                return StatusCode(201);
+            if (result != null)
+                return StatusCode(201, result);
             else
                 return StatusCode(204);
 
